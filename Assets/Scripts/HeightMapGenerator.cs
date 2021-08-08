@@ -3,7 +3,7 @@
 public class HeightMapGenerator : MonoBehaviour {
     public int seed;
     public bool randomizeSeed;
-
+    
     public int numOctaves = 7;
     public float persistence = .5f;
     public float lacunarity = 2;
@@ -11,7 +11,7 @@ public class HeightMapGenerator : MonoBehaviour {
 
     public bool useComputeShader = true;
     public ComputeShader heightMapComputeShader;
-
+    
     public float[] GenerateHeightMap (int mapSize) {
         if (useComputeShader) {
             return GenerateHeightMapGPU (mapSize);
@@ -86,7 +86,8 @@ public class HeightMapGenerator : MonoBehaviour {
                 float scale = initialScale;
                 float weight = 1;
                 for (int i = 0; i < numOctaves; i++) {
-                    Vector2 p = offsets[i] + new Vector2 (x / (float) mapSize, y / (float) mapSize) * scale;
+                    Vector2 p = new Vector2((x + offsets[i].x) / mapSize * scale, 
+                        (y + offsets[i].y) / mapSize * scale);
                     noiseValue += Mathf.PerlinNoise (p.x, p.y) * weight;
                     weight *= persistence;
                     scale *= lacunarity;
